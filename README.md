@@ -1,3 +1,8 @@
+# RISE patch note
+* Long fingre type robotiq 2f grippper is added
+* Robotiq E-Pick gripper is added
+
+---
 # Robotiq
 
 ## Status
