@@ -1,40 +1,17 @@
-# RISE patch note
-* Long fingre type robotiq 2f grippper is added
-* Robotiq E-Pick gripper is added
-
----
 # Robotiq
 
-## Status
+## RISE patch note
 
-As of 2021-05-28, it would appear this repository is ***unmaintained***.
+* Long finger type robotiq 2f grippper is added from `melodic-devel` branch
+* Robotiq E-Pick gripper is added from `melodic-devel` branch
 
-Robotiq is not maintaining the packages in this repository and the last active maintainer ([jproberge](https://github.com/jproberge)) does not appear to be active any more.
+## ROS1 Distro Support
 
-The ROS-Industrial consortia are not involved: for historical reasons, the `robotiq` repository is hosted on the `ros-industrial` Github organisation, but there is no direct link with any of the other repositories there.
-
-Please direct support requests to [dof.robotiq.com](https://dof.robotiq.com/). The tracker here is not monitored by Robotiq employees.
-
-
-## ROS Distro Support
-
-|         | Indigo | Jade | Kinetic | Melodic |
-|:-------:|:------:|:----:|:-------:|:-------:|
-| Branch  | [`indigo-devel`](https://github.com/ros-industrial/robotiq/tree/indigo-devel) | [`jade-devel`](https://github.com/ros-industrial/robotiq/tree/jade-devel) | [`kinetic-devel`](https://github.com/ros-industrial/robotiq/tree/kinetic-devel) | [`kinetic-devel`](https://github.com/ros-industrial/robotiq/tree/kinetic-devel) |)
-| Status  |  supported | not supported |  supported |  supported |
-| Version | [version](http://repositories.ros.org/status_page/ros_indigo_default.html?q=robotiq) | [version](http://repositories.ros.org/status_page/ros_jade_default.html?q=robotiq) | [version](http://repositories.ros.org/status_page/ros_kinetic_default.html?q=robotiq) | [version](http://repositories.ros.org/status_page/ros_melodic_default.html?q=robotiq) |
-
-## Travis - Continuous Integration
-
-Status: [![Build Status](https://travis-ci.com/ros-industrial/robotiq.svg?branch=kinetic-devel)](https://travis-ci.com/ros-industrial/robotiq)
-
-## ROS Buildfarm
-
-There are no up-to-date releases of these packages available from the ROS buildfarm.
-
-[![support level: community](https://img.shields.io/badge/support%20level-community-lightgray.svg)](http://rosindustrial.org/news/2016/10/7/better-supporting-a-growing-ros-industrial-software-platform)
-
-Robotiq meta-package.  See the [ROS wiki][] page for more information. 
+| Distro | Branch | Reference |
+| :----: |:-----: |:--------: |
+| Kinetic | [indigo-devel](https://github.com/rise-lab-skku/rise-robotiq/tree/kinetic-devel) | [ros-industrial/robotiq](https://github.com/ros-industrial/robotiq) |
+| Melodic | [melodic-devel](https://github.com/rise-lab-skku/rise-robotiq/tree/melodic-devel) | [rise-lab-skku/rise-robotiq](https://github.com/rise-lab-skku/rise-robotiq) |
+| Noetic | [noetic-devel](https://github.com/rise-lab-skku/rise-robotiq/tree/noetic-devel) | [TAMS-Group/robotiq](https://github.com/TAMS-Group/robotiq) |
 
 ## License
 
@@ -47,4 +24,3 @@ This repo holds source code for all versions > groovy. For those versions <= gro
 
 [ROS wiki]: http://ros.org/wiki/robotiq
 [SVN repo]: https://code.google.com/p/swri-ros-pkg/source/browse
-
