@@ -14,17 +14,9 @@ class Robotiq3FGripperCTRL(object):
                                            self._status_cb
                                             )
         self.cmd_pub = rospy.Publisher("Robotiq3FGripperRobotOutput",
-                                       outputMsg)
-
-        self.pos_to_ticks_ = 200
-        self.pos_offset_ = 0
-        self.sci_to_ticks_ = -532
-        self.sci_offset_ = 0.22
-        self.vel_to_ticks_ = 2.94
-        self.vel_offset_ = 22
-        self.force_to_ticks_ = 5.7
-        self.force_offset_ = 15
-        self.cur_to_ticks_ = 10
+                                       outputMsg,
+                                       queue_size=2
+                                       )
         
         self.message = []
 
@@ -220,6 +212,9 @@ class Robotiq3FGripperCTRL(object):
     def is_reset(self):
         return int(self.cur_status.gGTO) == 0
 
+    def is_action(self):
+        return int(self.cur_status.gGTO) == 1
+    
     def is_ready(self):
         return int(self.cur_status.gACT) == 1
     
@@ -235,8 +230,6 @@ class Robotiq3FGripperCTRL(object):
             print('Scissor mode')
         return self.cur_status.gMOD
     
-    def is_action(self):
-        return int(self.cur_status.gGTO) == 1
     
     def get_gripper_status(self):
         gripper_status = int(self.cur_status.gIMC)
@@ -267,7 +260,7 @@ class Robotiq3FGripperCTRL(object):
         
     def get_finger_a_status(self):
         finger_a_status = int(self.cur_status.gDTA)
-        if finger_a_status == 0 
+        if finger_a_status == 0: 
             if self.is_action():
                 print('Finger A is in motion (now girpper is operating).')
             else:
@@ -329,38 +322,38 @@ class Robotiq3FGripperCTRL(object):
         err = int(self.cur_status.gFLT)
         if err == 0:
             print('No fault (fault LED off)')
-        elif err = 5:
+        elif err == 5:
             print('Priority faults (fault LED off)\n')
             print('Action delayed, activation (reactivation) must be completed prior to action.')
-        elif err = 6:
+        elif err == 6:
             print('Priority faults (fault LED off)\n')
             print('Action delayed, mode change must be completed prior to action.')
-        elif err = 7:
+        elif err == 7:
             print('Priority faults (fault LED off)\n')
             print('The activation bit must be set prior to action.')
-        elif err = 9:
+        elif err == 9:
             print('Minor faults (fault LED continuous red)\n')
             print('The communication chip is not ready (may be booting).')
-        elif err = 10:
+        elif err ==10:
             print('Minor faults (fault LED continuous red)\n')
             print('Changing mode fault, interferences detected on Scissor (for less than 20 sec).')
-        elif err = 11:
+        elif err == 11:
             print('Minor faults (fault LED continuous red)\n')
             print('Automatic release in progress.')
-        elif err = 13:
+        elif err == 13:
             print('Major faults (fault LED blinking red) - Reset is required\n')
             print('Activation fault, verify that no interference or other error occurred.')
-        elif err = 14:
+        elif err == 14:
             print('Major faults (fault LED blinking red) - Reset is required\n')
             print('Changing mode fault, interferences detected on Scissor (for more than 20 sec).')
-        elif err = 15:
+        elif err == 15:
             print('Major faults (fault LED blinking red) - Reset is required\n')
             print('Automatic release completed. Reset and activation is required.')
         return self.cur_status.gFLT
             
         
     def get_gripper_target_pos(self):
-        if self.outputMsg.rICF is not:
+        if self.outputMsg.rICF == 0:
             target_pos = int(self.cur_status.gPRA)
             if target_pos == 0:
                 print('minimum position (full opening)')
@@ -391,7 +384,7 @@ class Robotiq3FGripperCTRL(object):
             print('minimum position (full opening)')
         elif cur_pos == 255:
             print('maximum position (full closing)')
-        elif:
+        else:
             print('Finger A pos is {}'.format(cur_pos))
         return self.cur_status.gPOA
     
@@ -411,7 +404,7 @@ class Robotiq3FGripperCTRL(object):
             print('minimum position (full opening)')
         elif tar_pos == 255:
             print('maximum position (full closing)')
-        elif:
+        else:
             print('Finger B target position is {}'.format(tar_pos))
         return self.cur_status.gPRB      
     
@@ -421,7 +414,7 @@ class Robotiq3FGripperCTRL(object):
             print('minimum position (full opening)')
         elif cur_pos == 255:
             print('maximum position (full closing)')
-        elif:
+        else:
             print('Finger B pos is {}'.format(cur_pos))
         return self.cur_status.gPOB        
     
@@ -441,7 +434,7 @@ class Robotiq3FGripperCTRL(object):
             print('minimum position (full opening)')
         elif tar_pos == 255:
             print('maximum position (full closing)')
-        elif:
+        else:
             print('Finger C target position is {}'.format(tar_pos))
         return self.cur_status.gPRC      
     
@@ -451,7 +444,7 @@ class Robotiq3FGripperCTRL(object):
             print('minimum position (full opening)')
         elif cur_pos == 255:
             print('maximum position (full closing)')
-        elif:
+        else:
             print('Finger C pos is {}'.format(cur_pos))
         return self.cur_status.gPOC        
     
@@ -481,7 +474,7 @@ class Robotiq3FGripperCTRL(object):
             print('minimum position (full opening)')
         elif cur_pos == 255:
             print('maximum position (full closing)')
-        elif:
+        else:
             print('Finger C pos is {}'.format(cur_pos))
         return self.cur_status.gPOS            
     
@@ -499,25 +492,30 @@ class Robotiq3FGripperCTRL(object):
     
     ############################################     function         ##########################################
     def is_stopped(self):
-        if int(self.cur_status.gGTO) is not and
-            int(self.cur_status.gSTA) and 
-            (int(self.cur_status.gDTA) == 1 or
-            int(self.cur_status.gDTA) == 2) and
-            (int(self.cur_status.gDTB) ==1 or
-            int(self.cur_status.gDTB) ==2) and
-            (int(self.cur_status.gDTC) ==1 or
-             int(self.cur_status.gDTC) ==2) and
-            (int(self.cur_status.gDTS) ==1 or
-             int(self.cur_status.gDTC) ==2):
+        if  int(self.cur_status.gSTA) and \
+            int(self.cur_status.gDTA) and\
+            int(self.cur_status.gDTB) and\
+            int(self.cur_status.gDTC) and\
+            int(self.cur_status.gDTS) :
             return True
         else:
+            print ('GTO')
+            print (self.cur_status.gGTO)
+            print ('STA')
+            print (self.cur_status.gSTA)
+            print ('DTA')
+            print(self.cur_status.gDTA)
+            print ('DTB')
+            print(self.cur_status.gDTB)
+            print ('DTC')
+            print(self.cur_status.gDTC)
+            print ('DTS')
+            print(self.cur_status.gDTS)
             return False
 
     def is_move(self):
-        if int(self.cur_status.gSTA) is not or
-            int(self.cur_statusg.gDTA) is not or
-            int(self.cur_status.gDTB) is not or
-            int(self.cur_status.gDTC):
+        if int(self.cur_status.gSTA) == 0 or int(self.cur_status.gDTA) == 0 or\
+            int(self.cur_status.gDTB) == 0 or int(self.cur_status.gDTC):
             return True
         else:
             return False
@@ -533,14 +531,16 @@ class Robotiq3FGripperCTRL(object):
                 return True
             r.sleep()
         return False
-    
+
     def wait_until_stopped(self, timeout=-1):
         r = rospy.Rate(30)
         start_time = rospy.get_time()
         while not rospy.is_shutdown():
-            if (timeout >= 0.0 and rospy.get_time() - start_time > timeout) or self.is_reset():
+            if (timeout >= 0.0 and rospy.get_time() - start_time > timeout) or not self.is_move:
+                print('?')
                 return False
             if self.is_stopped():
+                print('ooooo')
                 return True
             r.sleep()
         return False
@@ -562,20 +562,25 @@ class Robotiq3FGripperCTRL(object):
         self.cmd_pub.publish(cmd)
 
     def activate(self, timeout=-1):
-        cmd = Robotiq3FGripperRobotOutput()
-        cmd.rACT = 1
-        cmd.rGTO = 1
-        cmd.rSPA = 255
-        cmd.rFRA = 150
-        self.cmd_pub.publish(cmd)
-        
-        while not rospy.is_shutdown():
-            if timeout >= 0.0 and rospy.get_time() - start_time > timeout:
-                return False
-            if self.is_ready():
-                return True
-            r.sleep()
-        return False
+        self.active()
+        self.go_to_request()
+        self.set_grasping_speed(255)
+        self.set_grasping_force(150)
+        # cmd = outputMsg()
+        # cmd.rACT = 1
+        # cmd.rGTO = 1
+        # cmd.rSPA = 255
+        # cmd.rFRA = 150
+        # self.cmd_pub.publish(cmd)
+        # start_time = rospy.get_time()
+        # r = rospy.Rate(30)
+        # while not rospy.is_shutdown():
+        #     if timeout >= 0.0 and rospy.get_time() - start_time > timeout:
+        #         return False
+        #     if self.is_ready():
+        #         return True
+        #     r.sleep()
+        # return False
 
     def close(self):
         self.set_target_pos(255)
@@ -585,8 +590,8 @@ class Robotiq3FGripperCTRL(object):
         
     def faster(self):
         self.outputMsg.rSPA += 25
-        if outputMsg.rSPA > 255:
-            outputMsg.rSPA = 255
+        if self.outputMsg.rSPA > 255:
+            self.outputMsg.rSPA = 255
 
     def slower(self):
         self.outputMsg.rSPA -= 25
@@ -603,21 +608,62 @@ class Robotiq3FGripperCTRL(object):
         if self.outputMsg.rFRA > 255:
             self.outputMsg.rFRA = 255
             
+    def set_grasping_target_pos(self,target_pos,timeout =-1):
+        cmd = outputMsg()
+        cmd.rACT = 1
+        cmd.rGTO = 1
+        cmd.rSPA = 255
+        cmd.rFRA = 150
+        cmd.rPRA = target_pos
+        self.cmd_pub.publish(cmd)
+        start_time = rospy.get_time()
+        r = rospy.Rate(30)
+        while not rospy.is_shutdown():
+            if timeout >= 0.0 and rospy.get_time() - start_time > timeout:
+                return False
+            if self.is_ready():
+                return True
+            r.sleep()
+        return False        
+
+
 def main():
     rospy.init_node("robotiq_3f_gripper_ctrl_node")
     gripper = Robotiq3FGripperCTRL()
-    gripper.wait_for_connection()
-    if gripper.is_reset():
-        gripper.reset()
-        gripper.activate()
-    print(gripper.close())
-    while not rospy.is_shutdown():
-        print(gripper.open(block=False))
-        rospy.sleep(0.11)
-        gripper.stop()
-        print(gripper.close(block=False))
-        rospy.sleep(0.1)
-        gripper.stop()
+    if gripper.wait_for_connection():
+        print('gripper connection')
+        # gripper.get_gripper_status()
+        if gripper.is_reset():
+            print('reset state')
+            gripper.activate()
+            gripper.cmd_pub.publish(gripper.outputMsg)
+            gripper.wait_until_stopped()
+
+        if gripper.is_ready():
+            print('ready state')
+            # gripper.pinch_mode()
+            # gripper.cmd_pub.publish(gripper.outputMsg)
+            # gripper.wait_until_stopped()
+
+            gripper.activate()
+            gripper.set_grasping_target_pos(0)
+            #############################################
+            # gripper.close()
+            # rospy.sleep(0.2)
+            # gripper.cmd_pub.publish(gripper.outputMsg)
+            # rospy.sleep(0.2)
+            # gripper.wait_until_stopped()
+
+
+            # gripper.activate()
+            # gripper.open()
+            # gripper.cmd_pub.publish(gripper.outputMsg)
+            # gripper.wait_until_stopped()
+            #############################################
+
+
+    # gripper.get_gripper_status()
+
 
 
 if __name__ == "__main__":
