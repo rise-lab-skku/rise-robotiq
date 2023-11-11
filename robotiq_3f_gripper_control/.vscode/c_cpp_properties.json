@@ -1,0 +1,37 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/jj/catkin_ws/devel/include",
+                "/opt/ros/melodic/include",
+                "/home/jj/catkin_ws/src/compensation_example/include",
+                "/home/jj/catkin_ws/src/octomap-devel/dynamicEDT3D/include",
+                "/home/jj/catkin_ws/src/robotics-course/lidar_roi_example/include",
+                "/home/jj/catkin_ws/src/octomap-devel/octomap/include",
+                "/home/jj/catkin_ws/src/octomap_msgs/include",
+                "/home/jj/catkin_ws/src/octomap_mapping/octomap_server/include",
+                "/home/jj/catkin_ws/src/pcl_filtering/include",
+                "/home/jj/catkin_ws/src/octomap-devel/octovis/include",
+                "/home/jj/catkin_ws/src/Indy7_proximity_mapping/proxy_mapping/include",
+                "/home/jj/catkin_ws/src/robotics-course/kinematics_demo/include",
+                "/home/jj/catkin_ws/src/rise-robotiq/robotiq_2f_gripper_action_server/include",
+                "/home/jj/catkin_ws/src/rise-robotiq/robotiq_2f_gripper_control/include",
+                "/home/jj/catkin_ws/src/rise-robotiq/robotiq_3f_gripper_control/include",
+                "/home/jj/catkin_ws/src/rise-robotiq/robotiq_3f_gripper_articulated_gazebo_plugins/include",
+                "/home/jj/catkin_ws/src/rise-robotiq/robotiq_ft_sensor/include",
+                "/home/jj/catkin_ws/src/rise-robotiq/robotiq_ethercat/include",
+                "/home/jj/catkin_ws/src/ros_cpp_tutorial/include",
+                "/home/jj/catkin_ws/src/robotics-course/turtlebot_path_tracker/include",
+                "/home/jj/catkin_ws/src/vrep_plugin_imu/include",
+                "/usr/include"
+            ],
+            "name": "Linux",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
