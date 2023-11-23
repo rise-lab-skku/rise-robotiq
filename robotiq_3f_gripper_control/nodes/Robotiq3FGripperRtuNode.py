@@ -50,13 +50,13 @@ def mainLoop(address):
         pub.publish(status)
 
         # Wait a little
-        rospy.sleep(0.05)
+        # rospy.sleep(0.05)
 
         # Send the most recent command
         gripper.sendCommand()
 
         # Wait a little
-        rospy.sleep(0.05)
+        # rospy.sleep(0.05)
 
 
 if __name__ == "__main__":
