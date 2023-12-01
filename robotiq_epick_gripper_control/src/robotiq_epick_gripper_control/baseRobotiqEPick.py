@@ -40,8 +40,8 @@ Module baseRobotiqEPick: defines a base class for handling command and status of
 After being instanciated, a 'client' member must be added to the object. This client depends on the communication protocol used by the Gripper. As an example, the ROS node 'Robotiq2FGripperTcpNode.py' instanciate a robotiqbaseRobotiq2FGripper and adds a client defined in the module comModbusTcp.
 """
 
-from robotiq_epick_control.msg import RobotiqEPick_robot_input as inputMsg
-from robotiq_epick_control.msg import RobotiqEPick_robot_output as outputMsg
+from robotiq_epick_gripper_control.msg import RobotiqEPick_robot_input as inputMsg
+from robotiq_epick_gripper_control.msg import RobotiqEPick_robot_output as outputMsg
 
 
 class robotiqbaseRobotiqEPickGripper:

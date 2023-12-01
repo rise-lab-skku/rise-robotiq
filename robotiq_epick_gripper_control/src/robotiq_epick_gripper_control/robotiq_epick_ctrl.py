@@ -7,8 +7,8 @@ import numpy as np
 from time import sleep
 from copy import deepcopy
 
-from robotiq_epick_control.msg import RobotiqEPick_robot_input
-from robotiq_epick_control.msg import RobotiqEPick_robot_output
+from robotiq_epick_gripper_control.msg import RobotiqEPick_robot_input
+from robotiq_epick_gripper_control.msg import RobotiqEPick_robot_output
 
 
 class RobotiqEpickGripperInterface(object):
@@ -45,9 +45,13 @@ class RobotiqEpickGripperInterface(object):
         return self.gripper_status.gFLT
 
     def get_vacuum_lvl(self):
-        "In % of absolute vacuum"
+        "Returns the actual vacuum level in % of absolute vacuum"
         return self.gripper_status.gPO
-    
+
+    def get_pressure_request(self):
+        "Returns the pressure request in % of absolute vacuum"
+        return self.gripper_status.gPR
+
     def epick_advanced_mode(self, advanced_mode):
         if advanced_mode == True:
             self.gripper_msg.rMOD = 1
@@ -55,6 +59,13 @@ class RobotiqEpickGripperInterface(object):
             self.gripper_msg.rMOD = 0
     
     def epick_advanced_mode_params(self, max_vacuum = 40, min_vacuum = 45, action_timeout = 20):
+        """Reqest the gripper to enter advanced mode and set the parameters.
+
+        Args:
+            max_vacuum (int, optional): Target vacuum level in % of absolute vacuum. <100 means grip command. >100 means release command. Defaults to 40.
+            min_vacuum (int, optional): Minimum vacuum level in % of absolute vacuum. Defaults to 45.
+            action_timeout (int, optional): _description_. Defaults to 20.
+        """
         self.gripper_msg.rPR = max_vacuum
         self.gripper_msg.rSP = action_timeout
         self.gripper_msg.rFR = min_vacuum

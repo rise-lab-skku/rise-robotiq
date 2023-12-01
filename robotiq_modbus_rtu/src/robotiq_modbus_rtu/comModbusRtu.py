@@ -86,6 +86,13 @@ class communication:
       #To do!: Implement try/except 
       #Get status from the device
       response = self.client.read_holding_registers(0x07D0, numRegs, unit=0x0009)
+      # for i in range(10):
+      #    if response.isError():
+      #       print('Modbus RTU read error. Retrying {}/10'.format(i))
+      #       response = self.client.read_holding_registers(0x07D0, numRegs, unit=0x0009)
+      #       time.sleep(0.02)
+      #    else:
+      #       break
 
       #Instantiate output as an empty list
       output = []
@@ -94,6 +101,6 @@ class communication:
       for i in range(0, numRegs):
          output.append((response.getRegister(i) & 0xFF00) >> 8)
          output.append( response.getRegister(i) & 0x00FF)
-      
+
       #Output the result
       return output

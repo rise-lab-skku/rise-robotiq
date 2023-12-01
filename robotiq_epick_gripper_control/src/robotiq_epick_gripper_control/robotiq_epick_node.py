@@ -56,8 +56,8 @@ import comModBusRTU
 import baseRobotiqEPick
 import os
 import sys
-from robotiq_epick_control.msg import RobotiqEPick_robot_input as inputMsg
-from robotiq_epick_control.msg import RobotiqEPick_robot_output as outputMsg
+from robotiq_epick_gripper_control.msg import RobotiqEPick_robot_input as inputMsg
+from robotiq_epick_gripper_control.msg import RobotiqEPick_robot_output as outputMsg
 
 
 def mainLoop(device):

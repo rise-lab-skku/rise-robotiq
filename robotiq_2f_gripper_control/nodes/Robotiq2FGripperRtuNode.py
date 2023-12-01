@@ -62,7 +62,7 @@ def mainLoop(device):
     rospy.init_node('robotiq2FGripper')
 
     #The Gripper status is published on the topic named 'Robotiq2FGripperRobotInput'
-    pub = rospy.Publisher('Robotiq2FGripperRobotInput', inputMsg.Robotiq2FGripper_robot_input)
+    pub = rospy.Publisher('Robotiq2FGripperRobotInput', inputMsg.Robotiq2FGripper_robot_input, queue_size=10)
 
     #The Gripper command is received from the topic named 'Robotiq2FGripperRobotOutput'
     rospy.Subscriber('Robotiq2FGripperRobotOutput', outputMsg.Robotiq2FGripper_robot_output, gripper.refreshCommand)
@@ -76,15 +76,16 @@ def mainLoop(device):
       pub.publish(status)     
 
       #Wait a little
-      #rospy.sleep(0.05)
+      rospy.sleep(0.05)
 
       #Send the most recent command
       gripper.sendCommand()
 
       #Wait a little
-      #rospy.sleep(0.05)
+      rospy.sleep(0.05)
             
 if __name__ == '__main__':
     try:
+        print(sys.argv[1])
         mainLoop(sys.argv[1])
     except rospy.ROSInterruptException: pass

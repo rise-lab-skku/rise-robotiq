@@ -14,7 +14,8 @@ class RobotiqCGripper(object):
         self.cur_status = None
         self.status_sub = rospy.Subscriber('Robotiq2FGripperRobotInput', inputMsg,
                                            self._status_cb)
-        self.cmd_pub = rospy.Publisher('Robotiq2FGripperRobotOutput', outputMsg)
+        self.cmd_pub = rospy.Publisher('Robotiq2FGripperRobotOutput', outputMsg, queue_size=10)
+        rospy.sleep(0.2)
 
     def _status_cb(self, msg):
         self.cur_status = msg
@@ -132,7 +133,7 @@ class RobotiqCGripper(object):
         cmd.rSP = int(np.clip(255./(0.1-0.013) * (vel-0.013), 0, 255))
         cmd.rFR = int(np.clip(255./(100.-30.) * (force-30.), 0, 255))
         self.cmd_pub.publish(cmd)
-        rospy.sleep(0.1)
+        # rospy.sleep(0.1)
         if block:
             if not self.wait_until_moving(timeout):
                 return False
