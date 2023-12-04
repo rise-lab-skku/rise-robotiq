@@ -636,7 +636,8 @@ class Robotiq3FGripperCTRL(object):
         # return False        
 
     def msg_pub(self):
-        self.activate()
+        self.active()
+        self.go_to_request()
         self.cmd_pub.publish(self.outputMsg)
         rospy.sleep(0.2)
 
