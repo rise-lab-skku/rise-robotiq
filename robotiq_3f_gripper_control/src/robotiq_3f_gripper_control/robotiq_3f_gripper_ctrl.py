@@ -17,16 +17,16 @@ class Robotiq3FGripperCTRL(object):
                                        outputMsg,
                                        queue_size=2
                                        )
-        
+
         self.message = []
 
         self.outputMsg = outputMsg()
 
     def _status_cb(self, msg):
         self.cur_status = msg
-    
+
     #######################################         output msg            ######################################
-    
+
     # rACT: Action request (activation bit).
     # 0x0 - Decativate gripper.
     # 0x1 - Activate gripper.
@@ -61,7 +61,7 @@ class Robotiq3FGripperCTRL(object):
 
     def stop(self):
         self.outputMsg.rGTO = 0
-    
+
     def go_to_request(self):
         self.outputMsg.rGTO = 1
 
@@ -71,9 +71,9 @@ class Robotiq3FGripperCTRL(object):
 
     def glove_mode_off(self):
         self.outputMsg.rGLV = 0
-    
+
     def glove_mode_on(self):
-        self.outputMsg.rGLV = 1 
+        self.outputMsg.rGLV = 1
 
     # rPRA: Target position of the fingers (or finger A only if bit rICF is set).
     # 0x00 Minimum position (open).
@@ -96,7 +96,7 @@ class Robotiq3FGripperCTRL(object):
     # set).
     # 0x00 Minimum force.
     # 0xFF Maximum force.
-        
+
     def set_grasping_force(self,force):# force : 0~255
         self.outputMsg.rICF = 0
         self.outputMsg.rFRA = force
@@ -104,7 +104,7 @@ class Robotiq3FGripperCTRL(object):
     # rPRA: Target position of the fingers (or finger A only if bit rICF is set).
     # 0x00 Minimum position (open).
     # 0xFF Maximum position (close).
-    
+
     def set_finger_a_target_pos(self,pos):# pos : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rPRA = pos
@@ -113,7 +113,7 @@ class Robotiq3FGripperCTRL(object):
     # Setting a speed will not initiate a motion.
     # 0x00 Minimum speed.
     # 0xFF Maximum speed.
-        
+
     def set_finger_a_target_grasping_speed(self,speed):# speed : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rSPA = speed
@@ -126,7 +126,7 @@ class Robotiq3FGripperCTRL(object):
     def set_finger_a_grasping_force(self,force):# force : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rFRA = force
-    
+
     # rPRB: Finger B target position. It is only available if bit rICF is set.
     # 0x00 Minimum position (open).
     # 0xFF Maximum position (close).
@@ -134,20 +134,20 @@ class Robotiq3FGripperCTRL(object):
     def set_finger_b_target_pos(self,pos):# pos : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rPRB = pos
-    
+
     # rSPB: Finger B speed. It is only available if bit rICF is set.
     # Setting a speed will not initiate a motion.
     # 0x00 Minimum speed.
-    # 0xFF Maximum speed.    
+    # 0xFF Maximum speed.
 
     def set_finger_b_target_speed(self,speed):# speed : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rSPB = speed
-    
+
     # rFRB: Finger B force. It is only available if bit rICF is set.
     # 0x00 Minimum force.
     # 0xFF Maximum force.
-    
+
     def set_finger_b_grasping_force(self,force):# force : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rFRB = force
@@ -159,47 +159,47 @@ class Robotiq3FGripperCTRL(object):
     def set_finger_c_target_pos(self,pos):# pos : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rPRC = pos
-    
+
     # rSPC: Finger C speed. It is only available if bit rICF is set.
     # Setting a speed will not initiate a motion.
     # 0x00 Minimum speed.
-    # 0xFF Maximum speed.    
+    # 0xFF Maximum speed.
 
     def set_finger_c_target_speed(self,speed):# speed : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rSPC = speed
-    
+
     # rFRC: Finger C force. It is only available if bit rICF is set.
     # 0x00 Minimum force.
     # 0xFF Maximum force.
-    
+
     def set_finger_c_grasping_force(self,force):# force : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rFRC = force
-    
+
     # rPRS: Scissor axis target position. It is only applied if the Individual
     # Control of Scissor option is selected (bit rICS is set).
     # 0x00 Minimum position (open).
     # 0xFF Maximum position (close).
-    
+
     def set_scissor_axis_target_pos(self,pos):# pos : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rPRS = pos
-    
+
     # rSPS: Scissor axis speed. It is only applied if the Individual
     # Control of Scissor option is selected (bit rICS is set).
     # 0x00 Minimum speed.
     # 0xFF Maximum speed.
-        
+
     def set_scissor_axis_target_speed(self,speed):# speed : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rSPS = speed
-    
+
     # rFRS: Scissor axis force. It is only applied if the Individual
     # Control of Scissor option is selected (bit rICS is set).
     # 0x00 Minimum force.
     # 0xFF Maximum force.
-    
+
     def set_scissor_axis_target_force(self,force):# force : 0~255
         self.outputMsg.rICF = 1
         self.outputMsg.rFRS = force
@@ -208,16 +208,16 @@ class Robotiq3FGripperCTRL(object):
     ############################################################################################################
 
     #######################################          input msg            ######################################
-        
+
     def is_reset(self):
         return self.cur_status.gGTO == 0
 
     def is_action(self):
         return self.cur_status.gGTO == 1
-    
+
     def is_ready(self):
         return self.cur_status.gACT == 1
-    
+
     def get_mode(self):
         mode = self.cur_status.gMOD
         if mode == 0:
@@ -229,8 +229,8 @@ class Robotiq3FGripperCTRL(object):
         else:
             print('Scissor mode')
         return self.cur_status.gMOD
-    
-    
+
+
     def get_gripper_status(self):
         gripper_status = self.cur_status.gIMC
         if gripper_status == 0:
@@ -257,10 +257,10 @@ class Robotiq3FGripperCTRL(object):
         else:
             print('Gripper is stopped. All fingers reached requested position')
         return self.cur_status.gSTA
-        
+
     def get_finger_a_status(self):
         finger_a_status = self.cur_status.gDTA
-        if finger_a_status == 0: 
+        if finger_a_status == 0:
             if self.is_action():
                 print('Finger A is in motion (now girpper is operating).')
             else:
@@ -350,8 +350,8 @@ class Robotiq3FGripperCTRL(object):
             print('Major faults (fault LED blinking red) - Reset is required\n')
             print('Automatic release completed. Reset and activation is required.')
         return self.cur_status.gFLT
-            
-        
+
+
     def get_gripper_target_pos(self):
         if self.outputMsg.rICF == 0:
             target_pos = self.cur_status.gPRA
@@ -364,7 +364,7 @@ class Robotiq3FGripperCTRL(object):
         else:
             print('Individual mode is ON')
         return self.cur_status.gPRA
-    
+
     def get_finger_a_target_pos(self):
         if self.outputMsg.rICF:
             target_pos = self.cur_status.gPRA
@@ -390,7 +390,7 @@ class Robotiq3FGripperCTRL(object):
         else:
             print('Individual mode is ON')
         return self.cur_status.gPOA
-    
+
     def get_finger_a_current_pos(self):
         cur_pos = self.cur_status.gPOA
         if cur_pos == 0:
@@ -400,8 +400,9 @@ class Robotiq3FGripperCTRL(object):
         else:
             print('Finger A pos is {}'.format(cur_pos))
         return self.cur_status.gPOA
-    
+
     def get_finger_a_force(self):
+        # TODO: Fix bugs. gCUA is not force. It is current consumption.
         force = self.cur_status.gCUA
         if force == 0:
             print('Finger A is weak')
@@ -410,7 +411,7 @@ class Robotiq3FGripperCTRL(object):
         else:
             print('Finger A is exerting {} amount of force'.format(force))
         return self.cur_status.gCUA
-    
+
     def get_finger_b_target_pos(self):
         tar_pos = self.cur_status.gPRB
         if tar_pos == 0:
@@ -419,8 +420,8 @@ class Robotiq3FGripperCTRL(object):
             print('maximum position (full closing)')
         else:
             print('Finger B target position is {}'.format(tar_pos))
-        return self.cur_status.gPRB      
-    
+        return self.cur_status.gPRB
+
     def get_finger_b_current_pos(self):
         cur_pos = self.cur_status.gPOB
         if cur_pos == 0:
@@ -429,8 +430,8 @@ class Robotiq3FGripperCTRL(object):
             print('maximum position (full closing)')
         else:
             print('Finger B pos is {}'.format(cur_pos))
-        return self.cur_status.gPOB        
-    
+        return self.cur_status.gPOB
+
     def get_finger_b_force(self):
         force = self.cur_status.gCUB
         if force == 0:
@@ -440,7 +441,7 @@ class Robotiq3FGripperCTRL(object):
         else:
             print('Finger B is exerting {} amount of force'.format(force))
         return self.cur_status.gCUB
-    
+
     def get_finger_c_target_pos(self):
         tar_pos = self.cur_status.gPRC
         if tar_pos == 0:
@@ -449,8 +450,8 @@ class Robotiq3FGripperCTRL(object):
             print('maximum position (full closing)')
         else:
             print('Finger C target position is {}'.format(tar_pos))
-        return self.cur_status.gPRC      
-    
+        return self.cur_status.gPRC
+
     def get_finger_c_current_pos(self):
         cur_pos = self.cur_status.gPOC
         if cur_pos == 0:
@@ -459,8 +460,8 @@ class Robotiq3FGripperCTRL(object):
             print('maximum position (full closing)')
         else:
             print('Finger C pos is {}'.format(cur_pos))
-        return self.cur_status.gPOC        
-    
+        return self.cur_status.gPOC
+
     def get_finger_c_force(self):
         force = self.cur_status.gCUC
         if force == 0:
@@ -470,7 +471,7 @@ class Robotiq3FGripperCTRL(object):
         else:
             print('Finger C is exerting {} amount of force'.format(force))
         return self.cur_status.gCUC
-    
+
     def get_scissor_target_pos(self):
         tar_pos = self.cur_status.gPRS
         if tar_pos == 0:
@@ -480,7 +481,7 @@ class Robotiq3FGripperCTRL(object):
         else:
             print('scissor target position is {}'.format(tar_pos))
         return self.cur_status.gPRS
-    
+
     def get_scissor_current_pos(self):
         cur_pos = self.cur_status.gPOS
         if cur_pos == 0:
@@ -489,8 +490,8 @@ class Robotiq3FGripperCTRL(object):
             print('maximum position (full closing)')
         else:
             print('Finger C pos is {}'.format(cur_pos))
-        return self.cur_status.gPOS            
-    
+        return self.cur_status.gPOS
+
     def get_scissor_target_force(self):
         force = self.cur_status.gCUS
         if force == 0:
@@ -499,10 +500,10 @@ class Robotiq3FGripperCTRL(object):
             print('Finger C is at Full force')
         else:
             print('Finger C is exerting {} amount of force'.format(force))
-        return self.cur_status.gCUS        
-        
+        return self.cur_status.gCUS
+
     ############################################################################################################
-    
+
     ############################################     function         ##########################################
     def is_stopped(self):
         if  self.cur_status.gSTA and \
@@ -531,7 +532,7 @@ class Robotiq3FGripperCTRL(object):
             return True
         else:
             return False
-        
+
     def is_done(self):
         # target pos = rPRA , rPRB , rPRC
         # cur pos = gPOA , gPOB , gPOC
@@ -542,7 +543,7 @@ class Robotiq3FGripperCTRL(object):
 
                 print('reached target value')
                 return True
-                
+
             else:
                 if self.is_stopped():
                     # self.get_motion_status()
@@ -570,7 +571,7 @@ class Robotiq3FGripperCTRL(object):
                 # print('ooooo')
                 return True
         return False
-        
+
     def wait_until_moving(self, timeout=-1):
         start_time = rospy.get_time()
         while not rospy.is_shutdown():
@@ -579,7 +580,7 @@ class Robotiq3FGripperCTRL(object):
             if not self.is_move():
                 return True
         return False
-    
+
     def reset(self):
         cmd = outputMsg()
         cmd.rACT = 0
@@ -595,12 +596,12 @@ class Robotiq3FGripperCTRL(object):
         self.outputMsg.rMOD = self.get_mode()
         self.set_target_pos(255)
         self.msg_pub()
-        
+
     def open(self):
         self.outputMsg.rMOD = self.get_mode()
         self.set_target_pos(0)
         self.msg_pub()
-        
+
     def faster(self):
         self.outputMsg.rSPA += 25
         if self.outputMsg.rSPA > 255:
@@ -620,7 +621,7 @@ class Robotiq3FGripperCTRL(object):
         self.outputMsg.rFRA -= 25
         if self.outputMsg.rFRA > 255:
             self.outputMsg.rFRA = 255
-            
+
     def set_grasping_target_pos(self,target_pos,timeout =-1):
         self.set_target_pos(target_pos)
         self.outputMsg.rMOD = self.get_mode()
@@ -633,7 +634,7 @@ class Robotiq3FGripperCTRL(object):
         #         return False
         #     if self.is_ready():
         #         return True
-        # return False        
+        # return False
 
     def msg_pub(self):
         self.active()
@@ -653,7 +654,7 @@ def main():
             gripper.activate()
             gripper.cmd_pub.publish(gripper.outputMsg)
             gripper.wait_until_stopped()
-        
+
         if gripper.is_ready():
             gripper.activate()
             # order -> msg_pub -> is_done
