@@ -1,41 +1,60 @@
 # Robotiq
-![robotiq_3f](https://img.shields.io/badge/ROBOTIQ_3f-red)
 
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-20.04-green)
 ![ROS](https://img.shields.io/badge/ROS-noetic-yellow)
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 
-## RISE patch note
+## RISE's Patch Notes
 
-* Long finger type robotiq 2f grippper is added from `melodic-devel` branch
-* Robotiq E-Pick gripper is added from `melodic-devel` branch
+* Long finger type Robotiq-2F is added from `melodic-devel` branch ([e456f6f](https://github.com/rise-lab-skku/rise-robotiq/commit/e456f6f3de6e85cf021da7db733555a3806245fc))
+* Robotiq E-Pick is added from `melodic-devel` branch ([b850dd2](https://github.com/rise-lab-skku/rise-robotiq/commit/b850dd2769ce4706edd9c8a670bd1891f3b67457))
+* Python interface of Robotiq-3F is added from CLI interface ([c11b925](https://github.com/rise-lab-skku/rise-robotiq/commit/c11b92597cf7cd14be71b4e9bd5e28bbb253d43d))
+* No-ROS version of Robotiq-3F is added ([eae6ccb](https://github.com/rise-lab-skku/rise-robotiq/commit/eae6ccb9ced9dbc30544318fd9e58db02dcd33b7))
 
+## How to install
 
-* original robotiq_3f gripper is not officially supported. especially, Robotiq3FGripperRtuNode.py is gripper driver ros node. This is necessary when tgrying to operate the gripper using ros.
-* when you want to trying to operate the gripper using ros.
-
+We recommend building only the packages you need.
+We are using `catkin build`, but `catkin_make` is also fine.
 
 ```sh
+catkin build $TARGET_PACKAGE
+```
+
+Some packages require additional dependencies.
+
+## How to use
+
+### Robotiq 3F
+
+```sh
+# Robotiq3FGripperRtuNode.py makes connection with gripper.
 rosrun robotiq_3f_gripper_control Robotiq3FGripperRtuNode.py /dev/ttyUSB0
 
+# Robotiq3FGripperSimpleController.py can control gripper using keyboard.
 rosrun robotiq_3f_gripper_control Robotiq3FGripperSimpleController.py
 ```
 
-### Trouble Shooting
+### Without ROS
+
+See [without_ros/README.md](without_ros/README.md).
+
+## Troubleshooting
 
 * Check your pymodbus version
-```sh
-pip install -U pymodbus==2.5.3
-```
+
+   ```sh
+   pip install -U pymodbus==2.5.3
+   ```
 
 * Add permissions
-```bash
-sudo usermod -a -G dialout $USER
-```
-```bash
-sudo chmod 777 /dev/ttyUSB0
-```
 
+   ```bash
+   sudo usermod -a -G dialout $USER
+   ```
+
+   ```bash
+   sudo chmod 777 /dev/ttyUSB0
+   ```
 
 ## ROS1 Distro Support
 

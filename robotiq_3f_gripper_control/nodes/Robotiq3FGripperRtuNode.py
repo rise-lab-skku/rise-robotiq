@@ -23,13 +23,12 @@ def mainLoop(address):
     gripper.client = robotiq_modbus_rtu.comModbusRtu.communication(retry=True)
 
     # We connect to the address received as an argument
-    success = gripper.client.connectToDevice(address)
+    is_connected = gripper.client.connectToDevice(address)
 
     rospy.init_node("robotiq3FGripper")
-    if success:
-        rospy.loginfo('connection success')
-    else:
-        rospy.logerr('connection fail')
+    if not is_connected:
+        rospy.logerr("Cannot connect to device")
+        return
 
     # The Gripper status is published on the topic named 'Robotiq3FGripperRobotInput'
     pub = rospy.Publisher(
@@ -50,13 +49,13 @@ def mainLoop(address):
         pub.publish(status)
 
         # Wait a little
-        # rospy.sleep(0.05)
+        rospy.sleep(0.05)
 
         # Send the most recent command
         gripper.sendCommand()
 
         # Wait a little
-        # rospy.sleep(0.05)
+        rospy.sleep(0.05)
 
 
 if __name__ == "__main__":
