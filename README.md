@@ -9,7 +9,7 @@
 * Long finger type Robotiq-2F is added from `melodic-devel` branch ([e456f6f](https://github.com/rise-lab-skku/rise-robotiq/commit/e456f6f3de6e85cf021da7db733555a3806245fc))
 * Robotiq E-Pick is added from `melodic-devel` branch ([b850dd2](https://github.com/rise-lab-skku/rise-robotiq/commit/b850dd2769ce4706edd9c8a670bd1891f3b67457))
 * Python interface of Robotiq-3F is added from CLI interface ([c11b925](https://github.com/rise-lab-skku/rise-robotiq/commit/c11b92597cf7cd14be71b4e9bd5e28bbb253d43d))
-* No-ROS version of Robotiq-3F is added ()
+* No-ROS version of Robotiq-3F is added ([eae6ccb](https://github.com/rise-lab-skku/rise-robotiq/commit/eae6ccb9ced9dbc30544318fd9e58db02dcd33b7))
 
 ## How to install
 
@@ -33,6 +33,10 @@ rosrun robotiq_3f_gripper_control Robotiq3FGripperRtuNode.py /dev/ttyUSB0
 # Robotiq3FGripperSimpleController.py can control gripper using keyboard.
 rosrun robotiq_3f_gripper_control Robotiq3FGripperSimpleController.py
 ```
+
+### Without ROS
+
+See [without_ros/README.md](without_ros/README.md).
 
 ## Troubleshooting
 
