@@ -16,6 +16,12 @@
 We recommend building only the packages you need.
 We are using `catkin build`, but `catkin_make` is also fine.
 
+install required library
+```sh
+sudo apt-get install ros-noetic-socketcan-interface ros-noetic-soem
+```
+
+catkin build
 ```sh
 catkin build $TARGET_PACKAGE
 ```
